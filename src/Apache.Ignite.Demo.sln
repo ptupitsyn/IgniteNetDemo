@@ -7,20 +7,38 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apache.Ignite.Demo.Data", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apache.Ignite.Demo.Tests", "Apache.Ignite.Demo.Tests\Apache.Ignite.Demo.Tests.csproj", "{0F81FE49-2851-4003-A546-4BDFA17BB8AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apache.Ignite.Demo.Console", "Apache.Ignite.Demo.Console\Apache.Ignite.Demo.Console.csproj", "{A1BAE431-5339-406D-BAE2-1BF9454D1DCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Debug|x64.ActiveCfg = Debug|x64
 		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Debug|x64.Build.0 = Debug|x64
+		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Release|x64.ActiveCfg = Release|x64
 		{5C5AE131-E6ED-4E8B-8BDE-3FB93D511262}.Release|x64.Build.0 = Release|x64
+		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Debug|x64.ActiveCfg = Debug|x64
 		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Debug|x64.Build.0 = Debug|x64
+		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Release|x64.ActiveCfg = Release|x64
 		{0F81FE49-2851-4003-A546-4BDFA17BB8AA}.Release|x64.Build.0 = Release|x64
+		{A1BAE431-5339-406D-BAE2-1BF9454D1DCC}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A1BAE431-5339-406D-BAE2-1BF9454D1DCC}.Debug|x64.ActiveCfg = Debug|x64
+		{A1BAE431-5339-406D-BAE2-1BF9454D1DCC}.Debug|x64.Build.0 = Debug|x64
+		{A1BAE431-5339-406D-BAE2-1BF9454D1DCC}.Release|Any CPU.ActiveCfg = Release|x64
+		{A1BAE431-5339-406D-BAE2-1BF9454D1DCC}.Release|x64.ActiveCfg = Release|x64
+		{A1BAE431-5339-406D-BAE2-1BF9454D1DCC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

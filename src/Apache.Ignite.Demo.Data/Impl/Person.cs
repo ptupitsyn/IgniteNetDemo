@@ -29,5 +29,10 @@ namespace Apache.Ignite.Demo.Data.Impl
         public string Country { get; set; }
         public string City { get; set; }
         public DateTime Birthday { get; set; }
+
+        public override string ToString()
+        {
+            return $"Person [Id: {Id}, Name: {Name}]";
+        }
     }
 }
