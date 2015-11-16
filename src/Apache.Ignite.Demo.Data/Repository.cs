@@ -20,11 +20,16 @@ namespace Apache.Ignite.Demo.Data
         private readonly IIgnite _ignite = Ignition.Start(GetConfiguration());
 
         private readonly ICache<long, IPerson> _persons;
+
+        private readonly ICache<Relation, object> _relations;
+
+
         private readonly IAtomicLong _idCounter;
 
         private Repository()
         {
             _persons = _ignite.GetOrCreateCache<long, IPerson>("persons");
+            _relations = _ignite.GetOrCreateCache<Relation, object>("relations");
             _idCounter = _ignite.GetAtomicLong("IgniteDemoIdCounter", 0, true);
         }
 
@@ -48,6 +53,11 @@ namespace Apache.Ignite.Demo.Data
             return _persons.PutAsync(person.Id, person);
         }
 
+        public Task AddFriend(IPerson source, IPerson target)
+        {
+            return _relations.PutAsync(new Relation(source.Id, target.Id), null);
+        }
+
         public Task<IPerson> GetPersonAsync(long id)
         {
             return _persons.GetAsync(id);
@@ -66,7 +76,11 @@ namespace Apache.Ignite.Demo.Data
                     new BinaryConfiguration
                     {
                         TypeConfigurations =
-                            new List<BinaryTypeConfiguration> {new BinaryTypeConfiguration(typeof (Person))}
+                            new List<BinaryTypeConfiguration>
+                            {
+                                new BinaryTypeConfiguration(typeof (Person)),
+                                new BinaryTypeConfiguration(typeof (Relation))
+                            }
                     }
             };
         }
