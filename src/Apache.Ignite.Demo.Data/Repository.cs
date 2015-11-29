@@ -81,13 +81,16 @@ namespace Apache.Ignite.Demo.Data
             return _persons.GetAsync(id);
         }
 
-        public IEnumerable<IPerson> GetFriends(long id)
+        public Task<ICollection<IPerson>> GetFriendsAsync(long id)
         {
-            // TODO: Join
-            var testEntries = _relations.ToArray();
-            var entries = _relations.Query(new SqlQuery(typeof (Relation), "SourceId = ?", id)).GetAll();
+            return _persons.GetAllAsync(GetFriendIds(id)).ContinueWith(t => t.Result.Values);
+        }
 
-            return entries.Select(x => _persons.Get(x.Key.TargetId));
+        public IEnumerable<long> GetFriendIds(long id)
+        {
+            return _relations.QueryFields(new SqlFieldsQuery(
+                "select TargetId from Relation where SourceId = ?", id))
+                .GetAll().Select(x => (long) x[0]);
         }
 
         public IEnumerable<IPerson> SearchPersons(string text)

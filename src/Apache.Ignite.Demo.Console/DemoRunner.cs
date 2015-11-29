@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Apache.Ignite.Demo.Data;
 using static System.Console;
 
@@ -8,10 +9,10 @@ namespace Apache.Ignite.Demo.Console
     {
         static void Main(string[] args)
         {
-            RunDemo();
+            RunDemo().Wait();
         }
 
-        static async void RunDemo()
+        static async Task RunDemo()
         {
             var repo = Repository.Instance;
 
@@ -43,7 +44,7 @@ namespace Apache.Ignite.Demo.Console
                 {
                     WriteLine(p);
 
-                    foreach (var friend in repo.GetFriends(p.Id))
+                    foreach (var friend in await repo.GetFriendsAsync(p.Id))
                     {
                         WriteLine(" -> " + friend);
                     }
