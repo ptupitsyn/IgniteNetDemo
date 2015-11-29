@@ -59,7 +59,7 @@ namespace Apache.Ignite.Demo.Data
             return _persons.PutAsync(person.Id, person);
         }
 
-        public Task AddFriend(IPerson source, IPerson target)
+        public Task AddFriendAsync(IPerson source, IPerson target)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

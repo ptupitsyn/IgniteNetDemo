@@ -28,8 +28,8 @@ namespace Apache.Ignite.Demo.Console
 
             foreach (var friend in friends.Where(f => person.Id != f.Id))
             {
-                await repo.AddFriend(person, friend);
-                await repo.AddFriend(friend, person);
+                await repo.AddFriendAsync(person, friend);
+                await repo.AddFriendAsync(friend, person);
             }
 
             while (true)
