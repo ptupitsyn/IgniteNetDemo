@@ -1,4 +1,5 @@
-﻿using Apache.Ignite.Demo.Data;
+﻿using System.Linq;
+using Apache.Ignite.Demo.Data;
 using static System.Console;
 
 namespace Apache.Ignite.Demo.Console
@@ -22,6 +23,14 @@ namespace Apache.Ignite.Demo.Console
 
             await repo.SavePersonAsync(person);
 
+            var friends = repo.SearchPersons(person.Country + "*");
+
+            foreach (var friend in friends.Where(f => person.Id != f.Id))
+            {
+                await repo.AddFriend(person, friend);
+                await repo.AddFriend(friend, person);
+            }
+
             while (true)
             {
                 Write("Enter search text: ");
@@ -33,6 +42,11 @@ namespace Apache.Ignite.Demo.Console
                 foreach (var p in repo.SearchPersons(text))
                 {
                     WriteLine(p);
+
+                    foreach (var friend in repo.GetFriends(p.Id))
+                    {
+                        WriteLine(" -> " + friend);
+                    }
                 }
             }
         }

@@ -36,13 +36,6 @@
                             <bean class="org.apache.ignite.cache.CacheTypeMetadata">
                                 <property name="keyType" value="java.lang.Long"/>
                                 <property name="valueType" value="Person"/>
-                                <property name="queryFields">
-                                    <map>
-                                        <entry key="name" value="java.lang.String"/>
-                                        <entry key="country" value="java.lang.String"/>
-                                        <entry key="city" value="java.lang.String"/>
-                                    </map>
-                                </property>
                                 <property name="textFields">
                                     <list>
                                         <value>_name</value>
@@ -65,11 +58,16 @@
                         <list>
                             <bean class="org.apache.ignite.cache.CacheTypeMetadata">
                                 <property name="keyType" value="Relation"/>
-                                <property name="valueType" value="Object"/>
+                                <property name="valueType" value="Relation"/>
                                 <property name="queryFields">
                                     <map>
                                         <entry key="SourceId" value="java.lang.Long"/>
                                         <entry key="TargetId" value="java.lang.Long"/>
+                                    </map>
+                                </property>
+                                <property name="ascendingFields">
+                                    <map>
+                                        <entry key="SourceId" value="java.lang.Long"/>
                                     </map>
                                 </property>
                             </bean>

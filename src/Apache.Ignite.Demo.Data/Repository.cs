@@ -24,7 +24,7 @@ namespace Apache.Ignite.Demo.Data
 
         private readonly ICache<long, IPerson> _persons;
 
-        private readonly ICache<Relation, object> _relations;
+        private readonly ICache<Relation, Relation> _relations;
 
 
         private readonly IAtomicLong _idCounter;
@@ -32,7 +32,7 @@ namespace Apache.Ignite.Demo.Data
         private Repository()
         {
             _persons = _ignite.GetCache<long, IPerson>("persons");
-            _relations = _ignite.GetCache<Relation, object>("relations");
+            _relations = _ignite.GetCache<Relation, Relation>("relations");
             _idCounter = _ignite.GetAtomicLong("IgniteDemoIdCounter", 0, true);
         }
 
@@ -53,12 +53,27 @@ namespace Apache.Ignite.Demo.Data
 
         public Task SavePersonAsync(IPerson person)
         {
+            if (person == null)
+                throw new ArgumentNullException(nameof(person));
+
             return _persons.PutAsync(person.Id, person);
         }
 
         public Task AddFriend(IPerson source, IPerson target)
         {
-            return _relations.PutAsync(new Relation(source.Id, target.Id), null);
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (source == target)
+                throw new ArgumentException("Can't add self as friend", nameof(target));
+
+            var relation = new Relation(source.Id, target.Id);
+
+            // TODO: How to query by key fields?
+            return _relations.PutAsync(relation, relation);
         }
 
         public Task<IPerson> GetPersonAsync(long id)
@@ -66,10 +81,13 @@ namespace Apache.Ignite.Demo.Data
             return _persons.GetAsync(id);
         }
 
-        public Task<ICollection<IPerson>> GetFriends(long id)
+        public IEnumerable<IPerson> GetFriends(long id)
         {
-            // TODO
-            throw new NotSupportedException();
+            // TODO: Join
+            var testEntries = _relations.ToArray();
+            var entries = _relations.Query(new SqlQuery(typeof (Relation), "SourceId = ?", id)).GetAll();
+
+            return entries.Select(x => _persons.Get(x.Key.TargetId));
         }
 
         public IEnumerable<IPerson> SearchPersons(string text)
