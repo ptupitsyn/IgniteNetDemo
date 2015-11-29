@@ -45,7 +45,7 @@
                                 </property>
                                 <property name="textFields">
                                     <list>
-                                        <value>name</value>
+                                        <value>_name</value>
                                         <value>country</value>
                                         <value>city</value>
                                     </list>
