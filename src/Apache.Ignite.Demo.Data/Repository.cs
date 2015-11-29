@@ -77,11 +77,7 @@ namespace Apache.Ignite.Demo.Data
             if (string.IsNullOrEmpty(text))
                 throw new ArgumentNullException(nameof(text));
 
-            var cursor = _persons.Query(new TextQuery(typeof (Person), text));
-
-            var all = cursor.GetAll();
-
-            return all.Select(x => x.Value);
+            return _persons.Query(new TextQuery(typeof (Person), text)).Select(x => x.Value);
         }
 
         public IEnumerable<IPerson> GetPersons()

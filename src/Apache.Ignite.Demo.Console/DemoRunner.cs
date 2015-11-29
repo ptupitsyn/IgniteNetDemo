@@ -22,9 +22,18 @@ namespace Apache.Ignite.Demo.Console
 
             await repo.SavePersonAsync(person);
 
-            foreach (var p in repo.SearchPersons("Russia"))
+            while (true)
             {
-                WriteLine(p);
+                Write("Enter search text: ");
+                var text = ReadLine();
+
+                if (string.IsNullOrWhiteSpace(text))
+                    return;
+
+                foreach (var p in repo.SearchPersons(text))
+                {
+                    WriteLine(p);
+                }
             }
         }
     }
