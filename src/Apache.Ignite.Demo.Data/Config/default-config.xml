@@ -21,5 +21,62 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean class="org.apache.ignite.configuration.IgniteConfiguration"/>
+    <bean class="org.apache.ignite.configuration.IgniteConfiguration">
+        <!-- Cache configurations (all properties are optional). -->
+        <property name="cacheConfiguration">
+            <list>
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <!--<property name="atomicityMode" value="ATOMIC"/>
+                    <property name="backups" value="1"/>-->
+                    <property name="name" value="persons" />
+
+                    <!-- Configure type metadata to enable queries. -->
+                    <property name="typeMetadata">
+                        <list>
+                            <bean class="org.apache.ignite.cache.CacheTypeMetadata">
+                                <property name="keyType" value="java.lang.Long"/>
+                                <property name="valueType" value="Person"/>
+                                <property name="queryFields">
+                                    <map>
+                                        <entry key="name" value="java.lang.String"/>
+                                        <entry key="country" value="java.lang.String"/>
+                                        <entry key="city" value="java.lang.String"/>
+                                    </map>
+                                </property>
+                                <property name="textFields">
+                                    <list>
+                                        <value>name</value>
+                                        <value>country</value>
+                                        <value>city</value>
+                                    </list>
+                                </property>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>                
+                
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <!--<property name="atomicityMode" value="ATOMIC"/>
+                    <property name="backups" value="1"/>-->
+                    <property name="name" value="relations" />
+
+                    <!-- Configure type metadata to enable queries. -->
+                    <property name="typeMetadata">
+                        <list>
+                            <bean class="org.apache.ignite.cache.CacheTypeMetadata">
+                                <property name="keyType" value="Relation"/>
+                                <property name="valueType" value="Object"/>
+                                <property name="queryFields">
+                                    <map>
+                                        <entry key="SourceId" value="java.lang.Long"/>
+                                        <entry key="TargetId" value="java.lang.Long"/>
+                                    </map>
+                                </property>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
 </beans>

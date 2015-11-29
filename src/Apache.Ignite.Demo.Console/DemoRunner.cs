@@ -14,13 +14,15 @@ namespace Apache.Ignite.Demo.Console
         {
             var repo = Repository.Instance;
 
+            await repo.PopulateDemoData();
+
             var person = repo.CreatePerson("Vasya Pupkin");
             person.Country = "Russia";
             person.City = "New Vasyki";
 
             await repo.SavePersonAsync(person);
 
-            foreach (var p in repo.GetPersons())
+            foreach (var p in repo.SearchPersons("Russia"))
             {
                 WriteLine(p);
             }

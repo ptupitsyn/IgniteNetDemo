@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Apache.Ignite.Core;
 using Apache.Ignite.Core.Binary;
 using Apache.Ignite.Core.Cache;
+using Apache.Ignite.Core.Cache.Query;
 using Apache.Ignite.Core.DataStructures;
 using Apache.Ignite.Demo.Data.Impl;
 
@@ -28,8 +31,8 @@ namespace Apache.Ignite.Demo.Data
 
         private Repository()
         {
-            _persons = _ignite.GetOrCreateCache<long, IPerson>("persons");
-            _relations = _ignite.GetOrCreateCache<Relation, object>("relations");
+            _persons = _ignite.GetCache<long, IPerson>("persons");
+            _relations = _ignite.GetCache<Relation, object>("relations");
             _idCounter = _ignite.GetAtomicLong("IgniteDemoIdCounter", 0, true);
         }
 
@@ -63,9 +66,47 @@ namespace Apache.Ignite.Demo.Data
             return _persons.GetAsync(id);
         }
 
+        public Task<ICollection<IPerson>> GetFriends(long id)
+        {
+            // TODO
+            throw new NotSupportedException();
+        }
+
+        public IEnumerable<IPerson> SearchPersons(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentNullException(nameof(text));
+
+            var cursor = _persons.Query(new TextQuery(typeof (Person), text));
+
+            var all = cursor.GetAll();
+
+            return all.Select(x => x.Value);
+        }
+
         public IEnumerable<IPerson> GetPersons()
         {
             return _persons.Select(x => x.Value);
+        }
+
+        public Task PopulateDemoData()
+        {
+            return Task.WhenAll(
+                File.ReadLines("SampleData.csv").Skip(1).Select(x => x.Split(',')).Select(data =>
+                {
+                    var person = CreatePerson(data[0]);
+
+                    person.Country = data[1];
+                    person.City = data[2];
+
+                    DateTime dt;
+                    if (DateTime.TryParseExact(data[3], "d", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+                    {
+                        person.Birthday = dt;
+                    }
+
+                    return SavePersonAsync(person);
+                }));
         }
 
         private static IgniteConfiguration GetConfiguration()
