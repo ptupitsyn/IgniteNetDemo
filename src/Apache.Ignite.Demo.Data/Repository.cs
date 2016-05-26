@@ -11,6 +11,7 @@ using Apache.Ignite.Core.Cache.Configuration;
 using Apache.Ignite.Core.Cache.Query;
 using Apache.Ignite.Core.DataStructures;
 using Apache.Ignite.Demo.Data.Impl;
+using Apache.Ignite.Linq;
 
 namespace Apache.Ignite.Demo.Data
 {
@@ -88,9 +89,11 @@ namespace Apache.Ignite.Demo.Data
 
         public IEnumerable<long> GetFriendIds(long id)
         {
-            return _relations.QueryFields(new SqlFieldsQuery(
-                "select TargetId from byte where SourceId = ?", id))
-                .GetAll().Select(x => (long) x[0]);
+            // Important: AsCacheQueryable enables LINQ-to-SQL
+            return _relations.AsCacheQueryable()
+                .Select(entry => entry.Key)
+                .Where(relation => relation.SourceId == id)
+                .Select(relation => relation.TargetId);
         }
 
         public IEnumerable<IPerson> SearchPersons(string text)

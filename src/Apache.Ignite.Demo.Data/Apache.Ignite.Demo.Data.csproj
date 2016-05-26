@@ -35,6 +35,14 @@
       <HintPath>..\packages\Apache.Ignite.1.6.0\lib\net40\Apache.Ignite.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Apache.Ignite.Linq, Version=1.6.0.11366, Culture=neutral, PublicKeyToken=a487a7ff0b2aaa4a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Apache.Ignite.Linq.1.6.0\lib\net40\Apache.Ignite.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.0.1\lib\net45\Remotion.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
