@@ -1,4 +1,5 @@
 ﻿using System;
+using Apache.Ignite.Core.Cache.Configuration;
 
 namespace Apache.Ignite.Demo.Data.Impl
 {
@@ -13,8 +14,10 @@ namespace Apache.Ignite.Demo.Data.Impl
             TargetId = targetId;
         }
 
+        [QuerySqlField(IsIndexed = true)]
         public long SourceId { get; }
 
+        [QuerySqlField(IsIndexed = true)]
         public long TargetId { get; }
 
 

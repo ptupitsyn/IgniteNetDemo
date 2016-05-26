@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Apache.Ignite.Core;
 using Apache.Ignite.Core.Binary;
 using Apache.Ignite.Core.Cache;
+using Apache.Ignite.Core.Cache.Configuration;
 using Apache.Ignite.Core.Cache.Query;
 using Apache.Ignite.Core.DataStructures;
 using Apache.Ignite.Demo.Data.Impl;
@@ -22,9 +23,9 @@ namespace Apache.Ignite.Demo.Data
 
         private readonly IIgnite _ignite = Ignition.Start(GetConfiguration());
 
-        private readonly ICache<long, IPerson> _persons;
+        private readonly ICache<long, IPerson> _persons;  // Person id to person
 
-        private readonly ICache<Relation, Relation> _relations;
+        private readonly ICache<Relation, byte> _relations;  // Map from relation id to relation type
 
 
         private readonly IAtomicLong _idCounter;
@@ -32,7 +33,7 @@ namespace Apache.Ignite.Demo.Data
         private Repository()
         {
             _persons = _ignite.GetCache<long, IPerson>("persons");
-            _relations = _ignite.GetCache<Relation, Relation>("relations");
+            _relations = _ignite.GetCache<Relation, byte>("relations");
             _idCounter = _ignite.GetAtomicLong("IgniteDemoIdCounter", 0, true);
         }
 
@@ -72,8 +73,7 @@ namespace Apache.Ignite.Demo.Data
 
             var relation = new Relation(source.Id, target.Id);
 
-            // TODO: How to query by key fields?
-            return _relations.PutAsync(relation, relation);
+            return _relations.PutAsync(relation, 0);
         }
 
         public Task<IPerson> GetPersonAsync(long id)
@@ -89,7 +89,7 @@ namespace Apache.Ignite.Demo.Data
         public IEnumerable<long> GetFriendIds(long id)
         {
             return _relations.QueryFields(new SqlFieldsQuery(
-                "select TargetId from Relation where SourceId = ?", id))
+                "select TargetId from byte where SourceId = ?", id))
                 .GetAll().Select(x => (long) x[0]);
         }
 
@@ -130,16 +130,12 @@ namespace Apache.Ignite.Demo.Data
         {
             return new IgniteConfiguration
             {
-                BinaryConfiguration =
-                    new BinaryConfiguration
-                    {
-                        TypeConfigurations =
-                            new List<BinaryTypeConfiguration>
-                            {
-                                new BinaryTypeConfiguration(typeof (Person)),
-                                new BinaryTypeConfiguration(typeof (Relation))
-                            }
-                    }
+                BinaryConfiguration = new BinaryConfiguration(typeof (Person), typeof (Relation)),
+                CacheConfiguration = new[]
+                {
+                    new CacheConfiguration("persons", new QueryEntity(typeof (long), typeof (Person))),
+                    new CacheConfiguration("relations", new QueryEntity(typeof (Relation), typeof (byte)))
+                }
             };
         }
     }

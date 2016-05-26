@@ -9,6 +9,8 @@ namespace Apache.Ignite.Demo.Console
     {
         static void Main(string[] args)
         {
+            //Environment.SetEnvironmentVariable("IGNITE_H2_DEBUG_CONSOLE", "true");
+
             RunDemo().Wait();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Apache.Ignite.Core.Cache.Configuration;
 
 namespace Apache.Ignite.Demo.Data.Impl
 {
@@ -14,6 +15,7 @@ namespace Apache.Ignite.Demo.Data.Impl
 
         public long Id { get; }
 
+        [QueryTextField]
         public string Name
         {
             get { return _name; }
@@ -26,8 +28,12 @@ namespace Apache.Ignite.Demo.Data.Impl
             }
         }
 
+        [QueryTextField]
         public string Country { get; set; }
+
+        [QueryTextField]
         public string City { get; set; }
+
         public DateTime Birthday { get; set; }
 
         public override string ToString()
